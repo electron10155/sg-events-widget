@@ -758,7 +758,6 @@ body.mode-full .compact-view { display: none; }
           <div class="cp-dots" id="cpDots"></div>
           <button class="cp-nav-btn" id="cpNext" title="下一个">›</button>
         </div>
-        <div class="cp-hint">点击展开完整信息</div>
       </div>
     </div>
   </div>
@@ -844,16 +843,8 @@ const CAT_META = {
   workshop:   { label: '工作坊',   icon: '✏️', grad: ['#FFD60A','#FF9500'] },
 };
 
-const BUILTIN_WEEK_DATES = [
-  { date:'2026-08-20', label:'今天', short:'8/20 周四' },
-  { date:'2026-08-21', label:'明天', short:'8/21 周五' },
-  { date:'2026-08-22', label:'周六', short:'8/22 周六' },
-  { date:'2026-08-23', label:'周日', short:'8/23 周日' },
-  { date:'2026-08-24', label:'周一', short:'8/24 周一' },
-  { date:'2026-08-25', label:'周二', short:'8/25 周二' },
-  { date:'2026-08-26', label:'周三', short:'8/26 周三' },
-  { date:'2026-08-27', label:'周四', short:'8/27 周四' },
-];
+// 日期列表不再静态写死，由 generateWeekDates() 在运行时按真实今天生成
+let BUILTIN_WEEK_DATES = [];
 
 const BUILTIN_EVENTS = [
   // ===== 8/20 今天 =====
@@ -1053,11 +1044,8 @@ async function loadData() {
     if (data.events && data.events.length > 0) {
       ALL_EVENTS = data.events;
       lastUpdated = data.lastUpdated;
-      if (data.weekDates && data.weekDates.length > 0) {
-        WEEK_DATES = data.weekDates;
-      } else {
-        WEEK_DATES = generateWeekDates();
-      }
+      // 始终使用真实今天生成的 7 天日期，避免服务端静态 weekDates 导致“今天”不更新
+      WEEK_DATES = generateWeekDates();
       if (data.userPrefs) USER_PREFS_DYNAMIC = data.userPrefs;
       const badge = document.getElementById('updateBadge');
       if (badge && lastUpdated) {
@@ -1072,7 +1060,6 @@ async function loadData() {
       console.log(`[SG Events] Loaded ${ALL_EVENTS.length} events from events.json`);
     }
   } catch (e) {
-    WEEK_DATES = generateWeekDates();
     console.log('[SG Events] Using embedded data:', e.message);
   }
 }
@@ -1457,13 +1444,36 @@ document.getElementById('expandedOverlay').addEventListener('click', (e) => {
 });
 
 // Init
+let _lastKnownToday = getTodayStr();
+
+function refreshIfDateChanged() {
+  const today = getTodayStr();
+  if (today !== _lastKnownToday) {
+    _lastKnownToday = today;
+    WEEK_DATES = generateWeekDates();
+    currentDate = today;
+    if (mode === 'compact') {
+      renderCompact();
+    } else {
+      renderDayTabs();
+      renderSlides();
+    }
+  }
+}
+
 async function init() {
+  // 默认先用真实日期，避免 loadData 前任何界面用旧静态日期
+  WEEK_DATES = generateWeekDates();
   await loadData();
-  currentDate = getTodayStr();
+  WEEK_DATES = generateWeekDates(); // 再确认一次
+  _lastKnownToday = getTodayStr();
+  currentDate = _lastKnownToday;
   // If today's date isn't in WEEK_DATES, use the first available date
   if (!WEEK_DATES.find(d => d.date === currentDate) && WEEK_DATES.length > 0) {
     currentDate = WEEK_DATES[0].date;
   }
+  // 每分钟检查一次真实日期是否变化（跨天自动刷新）
+  setInterval(refreshIfDateChanged, 60 * 1000);
   // PWA installed on mobile: go straight to full view
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   if (isStandalone && window.innerWidth <= 500) {
