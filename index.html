@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1c1c1e">
+<meta name="description" content="新加坡免费/低价活动每日精选">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SG Events">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>SG Events · 每日精选</title>
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -259,7 +266,27 @@ body.mode-full .compact-view { display: none; }
   flex-shrink: 0;
   margin-top: 8px;
 }
-.cp-dots { display: flex; gap: 5px; }
+.cp-dots { display: flex; gap: 5px; align-items: center; }
+.cp-nav { display: flex; align-items: center; gap: 7px; }
+.cp-nav-btn {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--card-2);
+  border: none;
+  color: var(--text-sec);
+  font-size: 13px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0 0 1px;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+.cp-nav-btn:hover { background: var(--accent); color: #000; }
+.cp-nav-btn:active { transform: scale(0.92); }
 .cp-dot {
   width: 5px; height: 5px;
   border-radius: 50%;
@@ -688,6 +715,9 @@ body.mode-full .compact-view { display: none; }
   body { padding: 0; }
   .pet { width: 100%; height: 100%; border-radius: 0; }
 }
+@media (display-mode: standalone) and (max-width: 500px) {
+  .collapse-btn { display: none; }
+}
 
 /* === Loading shimmer === */
 @keyframes shimmer {
@@ -723,7 +753,11 @@ body.mode-full .compact-view { display: none; }
         </div>
       </div>
       <div class="cp-footer">
-        <div class="cp-dots" id="cpDots"></div>
+        <div class="cp-nav">
+          <button class="cp-nav-btn" id="cpPrev" title="上一个">‹</button>
+          <div class="cp-dots" id="cpDots"></div>
+          <button class="cp-nav-btn" id="cpNext" title="下一个">›</button>
+        </div>
         <div class="cp-hint">点击展开完整信息</div>
       </div>
     </div>
@@ -763,6 +797,7 @@ body.mode-full .compact-view { display: none; }
         <span id="footerText">滑动浏览 · 点击查看官网</span>
         <span class="update-badge offline" id="updateBadge" style="display:none;"></span>
       </div>
+      <button class="expand-btn" id="installBtn" style="display:none;" title="安装到桌面">📲 安装</button>
       <button class="expand-btn" id="expandBtn">全部活动 →</button>
     </div>
   </div>
@@ -1205,6 +1240,18 @@ document.getElementById('compactView').addEventListener('click', () => {
   if (mode === 'compact') setMode('full');
 });
 
+// 紧凑模式左右翻页按钮
+document.getElementById('cpPrev').addEventListener('click', (e) => {
+  e.stopPropagation();
+  cpGoTo(cpIndex - 1);
+  startCompactTimer();
+});
+document.getElementById('cpNext').addEventListener('click', (e) => {
+  e.stopPropagation();
+  cpGoTo(cpIndex + 1);
+  startCompactTimer();
+});
+
 // ============================================================
 //  FULL 渲染（原有完整页逻辑）
 // ============================================================
@@ -1417,11 +1464,53 @@ async function init() {
   if (!WEEK_DATES.find(d => d.date === currentDate) && WEEK_DATES.length > 0) {
     currentDate = WEEK_DATES[0].date;
   }
-  // Start in compact mode: render today's top picks
-  document.body.classList.add('mode-compact');
-  renderCompact();
+  // PWA installed on mobile: go straight to full view
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  if (isStandalone && window.innerWidth <= 500) {
+    setMode('full');
+  } else {
+    document.body.classList.add('mode-compact');
+    renderCompact();
+  }
 }
 init();
+
+// Register Service Worker for PWA installability (skip in native Mac app)
+if ('serviceWorker' in navigator) {
+  const isNativeApp = !!(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.widget);
+  if (!isNativeApp) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js')
+        .then(() => console.log('[SG Events] Service Worker registered'))
+        .catch(err => console.warn('[SG Events] SW registration failed:', err));
+    });
+  }
+}
+
+// PWA install prompt
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = '';
+});
+window.addEventListener('appinstalled', () => {
+  deferredPrompt = null;
+  const btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'none';
+});
+document.getElementById('installBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('installBtn');
+  if (!deferredPrompt) {
+    if (btn) btn.style.display = 'none';
+    return;
+  }
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  if (btn) btn.style.display = 'none';
+});
 </script>
 
 </body>

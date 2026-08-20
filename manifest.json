@@ -1,0 +1,26 @@
+{
+  "name": "SG Events · 每日精选",
+  "short_name": "SG Events",
+  "description": "新加坡免费/低价活动每日精选，桌面小组件与完整日程一屏掌握",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#1c1c1e",
+  "orientation": "portrait-primary",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
