@@ -247,7 +247,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         panel.backgroundColor = .clear
         panel.hasShadow = false
         panel.hidesOnDeactivate = false
-        panel.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.desktopIconWindow)) + 1)
+        // macOS 原生桌面小组件（Sonoma+）活跃时渲染在 window level 19。
+        // 使用 level 20：始终显示在系统小组件之上，但仍低于主菜单栏(24)/状态栏(25)。
+        panel.level = NSWindow.Level(rawValue: 20)
         panel.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle]
         panel.isMovableByWindowBackground = true
         panel.delegate = self

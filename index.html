@@ -90,6 +90,9 @@ body.mode-full .compact-view { display: none; }
   height: 100%;
   min-height: 0;
   overflow: hidden;
+  touch-action: pan-y; /* 水平滑动留给 JS 手势识别，垂直交给浏览器 */
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .cp-left {
@@ -1217,10 +1220,48 @@ function startCompactTimer() {
 }
 function stopCompactTimer() { clearInterval(cpTimer); }
 
-// 点击迷你卡片 → 展开完整页
-document.getElementById('compactView').addEventListener('click', () => {
-  if (mode === 'compact') setMode('full');
+// 点击/滑动 手势识别（参考 carousel 的 touch/swipe 实现）
+// 移动距离 < 10px 视为点击 → 展开完整页；
+// 水平滑动 > 40px 视为翻页手势 → 仅切换活动卡片，不展开；
+// 其他情况（如拖拽窗口）不做任何处理。
+const CP_TAP_THRESHOLD = 10;   // 判定为"点击"的最大位移（px）
+const CP_SWIPE_THRESHOLD = 40; // 判定为"滑动翻页"的最小水平位移（px）
+let cpPointerDown = false;
+let cpStartX = 0;
+let cpStartY = 0;
+
+const compactEl = document.getElementById('compactView');
+
+compactEl.addEventListener('pointerdown', (e) => {
+  // 翻页按钮和圆点有自己的点击处理，不参与手势判定
+  if (e.target.closest('button') || e.target.closest('.cp-dots')) {
+    cpPointerDown = false;
+    return;
+  }
+  cpPointerDown = true;
+  cpStartX = e.clientX;
+  cpStartY = e.clientY;
 });
+
+compactEl.addEventListener('pointerup', (e) => {
+  if (!cpPointerDown) return;
+  cpPointerDown = false;
+  const dx = e.clientX - cpStartX;
+  const dy = e.clientY - cpStartY;
+  const dist = Math.hypot(dx, dy);
+  if (dist < CP_TAP_THRESHOLD) {
+    // 点击 → 展开完整页
+    if (mode === 'compact') setMode('full');
+  } else if (Math.abs(dx) > CP_SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy) * 1.5) {
+    // 水平滑动 → 仅切换活动卡片
+    if (dx > 0) cpGoTo(cpIndex - 1); else cpGoTo(cpIndex + 1);
+    startCompactTimer();
+  }
+  // 其余情况：位移较大但非明确水平滑动（多为拖拽），不触发任何动作
+});
+
+compactEl.addEventListener('pointercancel', () => { cpPointerDown = false; });
+compactEl.addEventListener('pointerleave', () => { cpPointerDown = false; });
 
 // 紧凑模式左右翻页按钮
 document.getElementById('cpPrev').addEventListener('click', (e) => {
