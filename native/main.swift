@@ -252,10 +252,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         panel.isMovableByWindowBackground = true
         panel.delegate = self
 
-        // Clip panel content to rounded rect so no white corners show.
+        // Square corners for the widget window (no rounding, no white edge artifacts).
         panel.contentView?.wantsLayer = true
-        panel.contentView?.layer?.cornerRadius = 16
-        panel.contentView?.layer?.masksToBounds = true
+        panel.contentView?.layer?.cornerRadius = 0
+        panel.contentView?.layer?.masksToBounds = false
         panel.contentView?.layer?.backgroundColor = NSColor.clear.cgColor
 
         // 4. WebView

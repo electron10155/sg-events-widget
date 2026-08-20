@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-08-20T11:59:23.366Z",
+  "lastUpdated": "2026-08-20T11:20:00.000Z",
   "generatedBy": "manual",
   "weekDates": [
     {
@@ -55,7 +55,8 @@
       "desc": "超级树灯光秀国庆特别版\"Songs of Singapore\"，四位本地歌手定制编曲。每场约15分钟，适合下班后散步观看。",
       "link": "https://www.gardensbythebay.org.sg",
       "source": "Gardens by the Bay",
-      "hot": true
+      "hot": true,
+      "image": "https://www.gardensbythebay.com.sg/content/dam/gbb-2021/image/things-to-do/events/garden-rhapsody/gr-masthead-1920x1080.jpg"
     },
     {
       "date": "2026-08-20",
@@ -67,7 +68,8 @@
       "location": "Esplanade Concourse 滨海艺术中心",
       "desc": "包容性艺术实践者 Zee 与手语艺术家 Shalini 带领，将音乐与手语结合，创造人人都能参与的表达体验。",
       "link": "https://www.esplanade.com/reddotaugust",
-      "source": "Esplanade"
+      "source": "Esplanade",
+      "image": "https://edge.sitecorecloud.io/theesplanad5789-esplanade9e9b-prod2dbd-27bc/media/project/esplanade/images/whats-on/festival-and-series/2026/red-dot-august/ingat-01.jpg"
     },
     {
       "date": "2026-08-20",
@@ -79,7 +81,8 @@
       "location": "Esplanade 滨海艺术中心",
       "desc": "歌手谢胜之与资深音乐人庄夏风一同重温经典华语金曲。A Date With Friends 系列。",
       "link": "https://www.esplanade.com/whats-on?IsFree=",
-      "source": "Esplanade"
+      "source": "Esplanade",
+      "image": "https://edge.sitecorecloud.io/theesplanad5789-esplanade9e9b-prod2dbd-27bc/media/project/esplanade/images/whats-on/festival-and-series/2026/a-date-with-friends/a-date-with-friends-2026-kv-thumbnail.jpg"
     },
     {
       "date": "2026-08-20",
@@ -91,7 +94,8 @@
       "location": "Objectifs Centre for Photography and Film",
       "desc": "致敬已故新加坡摄影大师陈立胜，回顾其捕捉国家静默节奏与层叠历史的影像遗产。适合独自安静欣赏。",
       "link": "https://www.objectifs.com.sg",
-      "source": "Objectifs"
+      "source": "Objectifs",
+      "image": "https://www.objectifs.com.sg/wp-content/uploads/2026/07/26-Spectacular-Reflection-scaled.jpg"
     },
     {
       "date": "2026-08-20",
@@ -103,7 +107,8 @@
       "location": "National Museum, 93 Stamford Rd",
       "desc": "公民/PR免费入场。当前特展：Once Upon a Tide（潮涌狮城）与 Singapore Odyssea。国家历史与沉浸式装置的完美结合。",
       "link": "https://www.nationalmuseum.nhb.gov.sg",
-      "source": "National Museum"
+      "source": "National Museum",
+      "image": "https://www.nationalmuseum.nhb.gov.sg/api/media/c1b88661-1bdd-4439-90b6-3cefd5fc51c7"
     },
     {
       "date": "2026-08-20",
@@ -115,7 +120,8 @@
       "location": "9 Lock Rd（多间画廊）",
       "desc": "旧军营改造的当代艺术区，多家国际画廊免费开放。远离喧嚣的安静艺术空间，独自漫步最佳。",
       "link": "https://www.gillmanbarracks.com",
-      "source": "Gillman Barracks"
+      "source": "Gillman Barracks",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/4/47/Gillman_Barracks_today_%282017%29.jpg"
     },
     {
       "date": "2026-08-20",
@@ -127,7 +133,8 @@
       "location": "URA Centre, 45 Maxwell Rd",
       "desc": "市区重建局互动展览，展示新加坡城市规划与未来愿景。免费、有空调、适合午休时间参观。",
       "link": "https://www.ura.gov.sg",
-      "source": "URA"
+      "source": "URA",
+      "image": "https://isomer-user-content.by.gov.sg/467/de08ad65-89ae-491b-af47-9c283e0cd56d/marina-bay-cityscape-1200x630px-meta-image.jpg"
     },
     {
       "date": "2026-08-21",
@@ -140,7 +147,8 @@
       "desc": "印尼团队 The Fox, The Folks 在国家博物馆外墙投影本地民间传说，配以新加坡 Artusik 与马来西亚 UiTM 的跨文化原创配乐。音乐+博物馆+艺术一次满足。",
       "link": "https://www.heritage.sg/sgnightfest/programmes/tales-of-earth-and-sea",
       "source": "Night Festival",
-      "hot": true
+      "hot": true,
+      "image": "https://www.heritage.sg/content/dam/snf/assets/programmes/tales-of-earth-and-sea1/desktop/the-fox-the-folks-tales-of-landscape2.png?width=2000&format=webply&optimize=high"
     },
     {
       "date": "2026-08-21",
@@ -153,7 +161,8 @@
       "desc": "荷兰 Close-Act 剧团东南亚首演！发光翼龙造型踩高跷表演者，融合灯光、偶戏与现场音乐，在布拉沙武吉士街区巡游。错过等一年！",
       "link": "https://www.heritage.sg/sgnightfest/programmes/birdmen-by-close-act",
       "source": "Night Festival",
-      "hot": true
+      "hot": true,
+      "image": "https://www.heritage.sg/content/dam/snf/assets/programmes/birdmen/website-birdmen-desktop.png?width=2000&format=webply&optimize=high"
     },
     {
       "date": "2026-08-21",
@@ -165,7 +174,8 @@
       "location": "Esplanade 滨海艺术中心",
       "desc": "多组实力艺人对唱联演，共度热闹的歌台之夜。A Date With Friends 2026 系列免费节目。",
       "link": "https://www.esplanade.com/whats-on?IsFree=",
-      "source": "Esplanade"
+      "source": "Esplanade",
+      "image": "https://edge.sitecorecloud.io/theesplanad5789-esplanade9e9b-prod2dbd-27bc/media/project/esplanade/images/whats-on/festival-and-series/2026/a-date-with-friends/a-date-with-friends-2026-kv-thumbnail.jpg"
     },
     {
       "date": "2026-08-21",
@@ -177,7 +187,8 @@
       "location": "The Cathay, 2 Handy Rd",
       "desc": "首届投影映射大赛，近50份东南亚艺术家投稿在国泰大厦外立面展出，前5名将贯穿整个艺术节。",
       "link": "https://www.heritage.sg/sgnightfest/programmes/malam-projection-mapping-competition",
-      "source": "Night Festival"
+      "source": "Night Festival",
+      "image": "https://www.heritage.sg/content/dam/snf/assets/programmes/malam/newer-malam-website-desktop.png?width=2000&format=webply&optimize=high"
     },
     {
       "date": "2026-08-21",
@@ -189,7 +200,8 @@
       "location": "Bugis Street Art Lane",
       "desc": "脚手架结构化作发光风暴云，移动的阴影重现武吉士航海者曾面对的怒涛。在发光灯塔间穿行，聆听穿越海峡的世代传说。",
       "link": "https://www.heritage.sg/sgnightfest/programmes/stormy-straits",
-      "source": "Night Festival"
+      "source": "Night Festival",
+      "image": "https://www.heritage.sg/content/dam/snf/assets/programmes/stormy-straits1/desktop/melting-collective-stormy-keyvisual1.png?width=2000&format=webply&optimize=high"
     },
     {
       "date": "2026-08-21",
@@ -201,7 +213,8 @@
       "location": "100 Victoria St",
       "desc": "漫步于神话植物与生灵之间，一个关于爱意的永恒称谓化身为现代民间童话。适合独自沉浸的梦幻空间。",
       "link": "https://www.heritage.sg/sgnightfest",
-      "source": "Night Festival"
+      "source": "Night Festival",
+      "image": "https://www.heritage.sg/content/dam/snf/assets/programmes/lovebug1/desktop/updated-website-lovebug-desktop.png?width=2000&format=webply&optimize=high"
     },
     {
       "date": "2026-08-21",
@@ -213,7 +226,8 @@
       "location": "13 Stamford Rd",
       "desc": "用碎布料、旧衣物和日常弃布制作的折纸动物雕塑，化为民间传说插画——将纺织废料升华为叙事艺术。",
       "link": "https://www.heritage.sg/sgnightfest",
-      "source": "Night Festival"
+      "source": "Night Festival",
+      "image": "https://www.heritage.sg/content/dam/snf/assets/programmes/once-upon-a-time-desktop-kv.png?width=2000&format=webply&optimize=high"
     },
     {
       "date": "2026-08-22",
@@ -226,7 +240,8 @@
       "desc": "荷兰剧团翼龙踩高跷灯光表演，仅开幕周末3天。今天和明天是最后机会！",
       "link": "https://www.heritage.sg/sgnightfest/programmes/birdmen-by-close-act",
       "source": "Night Festival",
-      "hot": true
+      "hot": true,
+      "image": "https://www.heritage.sg/content/dam/snf/assets/programmes/birdmen/website-birdmen-desktop.png?width=2000&format=webply&optimize=high"
     },
     {
       "date": "2026-08-22",
@@ -238,7 +253,8 @@
       "location": "Bras Basah.Bugis 艺术文化区",
       "desc": "所有灯光装置和投影继续展出。今晚延时至午夜，适合深度夜游。独自漫步灯光装置之间。",
       "link": "https://www.heritage.sg/sgnightfest",
-      "source": "Night Festival"
+      "source": "Night Festival",
+      "image": "https://www.heritage.sg/sgnightfest/media_1f6491d8b05e48f82e4efa38d6777f292aca8d507.png"
     },
     {
       "date": "2026-08-22",
@@ -250,7 +266,8 @@
       "location": "Oldham Theatre, National Archives",
       "desc": "东南亚复古恐怖电影放映+幕后档案展示+类型片讨论。欢迎穿恐怖/奇幻主题服装。独自观影也很有氛围感。",
       "link": "https://www.heritage.sg/sgnightfest/programmes/horror-nights-oldham-theatre",
-      "source": "Night Festival"
+      "source": "Night Festival",
+      "image": "https://www.heritage.sg/content/dam/snf/assets/programmes/horror-nights-at-oldham-theatre/website-horror-nights-at-oldham-theatre-desktop.png?width=2000&format=webply&optimize=high"
     },
     {
       "date": "2026-08-22",
@@ -262,7 +279,8 @@
       "location": "Esplanade 滨海艺术中心",
       "desc": "与 Mel & Elle 共度一个夜晚，经典旋律、满满心意和好伙伴。A Date With Friends 系列免费节目。",
       "link": "https://www.esplanade.com/whats-on?IsFree=",
-      "source": "Esplanade"
+      "source": "Esplanade",
+      "image": "https://edge.sitecorecloud.io/theesplanad5789-esplanade9e9b-prod2dbd-27bc/media/project/esplanade/images/whats-on/festival-and-series/2026/a-date-with-friends/a-date-with-friends-2026-kv-thumbnail.jpg"
     },
     {
       "date": "2026-08-22",
@@ -274,7 +292,8 @@
       "location": "Esplanade 滨海艺术中心",
       "desc": "尤克里里即兴演奏入门工作坊，感受与他人一起创作音乐的魔力。A Date With Friends 系列。",
       "link": "https://www.esplanade.com/whats-on?IsFree=",
-      "source": "Esplanade"
+      "source": "Esplanade",
+      "image": "https://edge.sitecorecloud.io/theesplanad5789-esplanade9e9b-prod2dbd-27bc/media/project/esplanade/images/whats-on/festival-and-series/2026/a-date-with-friends/a-date-with-friends-2026-kv-thumbnail.jpg"
     },
     {
       "date": "2026-08-23",
@@ -287,7 +306,8 @@
       "desc": "荷兰剧团翼龙踩高跷灯光表演最后一场！开幕周末3天演出今天落幕，错过等明年。",
       "link": "https://www.heritage.sg/sgnightfest/programmes/birdmen-by-close-act",
       "source": "Night Festival",
-      "hot": true
+      "hot": true,
+      "image": "https://www.heritage.sg/content/dam/snf/assets/programmes/birdmen/website-birdmen-desktop.png?width=2000&format=webply&optimize=high"
     },
     {
       "date": "2026-08-23",
@@ -299,7 +319,8 @@
       "location": "Bras Basah.Bugis 艺术文化区",
       "desc": "所有灯光装置和投影继续。周日到23:00，适合轻松夜游，人比周六少。",
       "link": "https://www.heritage.sg/sgnightfest",
-      "source": "Night Festival"
+      "source": "Night Festival",
+      "image": "https://www.heritage.sg/sgnightfest/media_1f6491d8b05e48f82e4efa38d6777f292aca8d507.png"
     },
     {
       "date": "2026-08-23",
@@ -311,7 +332,8 @@
       "location": "National Museum, 93 Stamford Rd",
       "desc": "公民/PR免费。Once Upon a Tide 与 Singapore Odyssea 两大特展，沉浸式装置体验。",
       "link": "https://www.nationalmuseum.nhb.gov.sg",
-      "source": "National Museum"
+      "source": "National Museum",
+      "image": "https://www.nationalmuseum.nhb.gov.sg/api/media/c1b88661-1bdd-4439-90b6-3cefd5fc51c7"
     },
     {
       "date": "2026-08-24",
@@ -323,7 +345,8 @@
       "location": "Bras Basah.Bugis 艺术文化区",
       "desc": "夜间艺术节灯光装置在工作日继续。今晚下班后可以悠闲逛展，人比周末少很多。",
       "link": "https://www.heritage.sg/sgnightfest",
-      "source": "Night Festival"
+      "source": "Night Festival",
+      "image": "https://www.heritage.sg/sgnightfest/media_1f6491d8b05e48f82e4efa38d6777f292aca8d507.png"
     },
     {
       "date": "2026-08-24",
@@ -335,7 +358,8 @@
       "location": "Esplanade 滨海艺术中心",
       "desc": "与 Silverwaves Band 一起庆祝家的声音，演绎深受喜爱的本地经典。Red Dot August 系列。",
       "link": "https://www.esplanade.com/reddotaugust",
-      "source": "Esplanade"
+      "source": "Esplanade",
+      "image": "https://edge.sitecorecloud.io/theesplanad5789-esplanade9e9b-prod2dbd-27bc/media/project/esplanade/images/whats-on/festival-and-series/2026/red-dot-august/red-dot-august-2026-thumbnail-kv-01.jpg"
     },
     {
       "date": "2026-08-24",
@@ -347,7 +371,8 @@
       "location": "National Museum, 93 Stamford Rd",
       "desc": "公民/PR免费入场。Once Upon a Tide 与 Singapore Odyssea。",
       "link": "https://www.nationalmuseum.nhb.gov.sg",
-      "source": "National Museum"
+      "source": "National Museum",
+      "image": "https://www.nationalmuseum.nhb.gov.sg/api/media/c1b88661-1bdd-4439-90b6-3cefd5fc51c7"
     },
     {
       "date": "2026-08-24",
@@ -359,7 +384,8 @@
       "location": "Supertree Grove, Gardens by the Bay",
       "desc": "超级树灯光秀国庆特别版\"Songs of Singapore\"。每场约15分钟。",
       "link": "https://www.gardensbythebay.org.sg",
-      "source": "Gardens by the Bay"
+      "source": "Gardens by the Bay",
+      "image": "https://www.gardensbythebay.com.sg/content/dam/gbb-2021/image/things-to-do/events/garden-rhapsody/gr-masthead-1920x1080.jpg"
     },
     {
       "date": "2026-08-25",
@@ -371,7 +397,8 @@
       "location": "Bras Basah.Bugis 艺术文化区",
       "desc": "夜间艺术节灯光装置工作日继续。今晚可以悠闲逛展。",
       "link": "https://www.heritage.sg/sgnightfest",
-      "source": "Night Festival"
+      "source": "Night Festival",
+      "image": "https://www.heritage.sg/sgnightfest/media_1f6491d8b05e48f82e4efa38d6777f292aca8d507.png"
     },
     {
       "date": "2026-08-25",
@@ -383,7 +410,8 @@
       "location": "Esplanade 滨海艺术中心",
       "desc": "Khalid Ajmain 和 Singapore Rojak 带来文字与音乐的情感碰撞。Red Dot August 系列。",
       "link": "https://www.esplanade.com/reddotaugust",
-      "source": "Esplanade"
+      "source": "Esplanade",
+      "image": "https://edge.sitecorecloud.io/theesplanad5789-esplanade9e9b-prod2dbd-27bc/media/project/esplanade/images/whats-on/festival-and-series/2026/red-dot-august/red-dot-august-2026-thumbnail-kv-01.jpg"
     },
     {
       "date": "2026-08-25",
@@ -395,7 +423,8 @@
       "location": "URA Centre, 45 Maxwell Rd",
       "desc": "市区重建局互动城市规划展览，免费入场。适合午休时间参观。",
       "link": "https://www.ura.gov.sg",
-      "source": "URA"
+      "source": "URA",
+      "image": "https://isomer-user-content.by.gov.sg/467/de08ad65-89ae-491b-af47-9c283e0cd56d/marina-bay-cityscape-1200x630px-meta-image.jpg"
     },
     {
       "date": "2026-08-26",
@@ -407,7 +436,8 @@
       "location": "Bras Basah.Bugis 艺术文化区",
       "desc": "夜间艺术节灯光装置继续。本周倒数第二天看夜节装置。",
       "link": "https://www.heritage.sg/sgnightfest",
-      "source": "Night Festival"
+      "source": "Night Festival",
+      "image": "https://www.heritage.sg/sgnightfest/media_1f6491d8b05e48f82e4efa38d6777f292aca8d507.png"
     },
     {
       "date": "2026-08-26",
@@ -419,7 +449,8 @@
       "location": "9 Lock Rd",
       "desc": "旧军营改造的当代艺术区，多家国际画廊免费开放。远离喧嚣的安静艺术空间。",
       "link": "https://www.gillmanbarracks.com",
-      "source": "Gillman Barracks"
+      "source": "Gillman Barracks",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/4/47/Gillman_Barracks_today_%282017%29.jpg"
     },
     {
       "date": "2026-08-27",
@@ -431,7 +462,8 @@
       "location": "Bras Basah.Bugis 艺术文化区",
       "desc": "夜间艺术节灯光装置继续。今晚 Fort Canning 夜间步道也开放（需购票$60）。",
       "link": "https://www.heritage.sg/sgnightfest",
-      "source": "Night Festival"
+      "source": "Night Festival",
+      "image": "https://www.heritage.sg/sgnightfest/media_1f6491d8b05e48f82e4efa38d6777f292aca8d507.png"
     },
     {
       "date": "2026-08-27",
@@ -443,7 +475,8 @@
       "location": "Esplanade 滨海艺术中心",
       "desc": "诗意的舞蹈剧场之旅，连接新加坡的过去、现在与未来。Red Dot August 系列免费节目。",
       "link": "https://www.esplanade.com/reddotaugust",
-      "source": "Esplanade"
+      "source": "Esplanade",
+      "image": "https://edge.sitecorecloud.io/theesplanad5789-esplanade9e9b-prod2dbd-27bc/media/project/esplanade/images/whats-on/festival-and-series/2026/red-dot-august/red-dot-august-2026-thumbnail-kv-01.jpg"
     },
     {
       "date": "2026-08-27",
@@ -455,7 +488,8 @@
       "location": "Supertree Grove, Gardens by the Bay",
       "desc": "超级树灯光秀国庆特别版。每场约15分钟。",
       "link": "https://www.gardensbythebay.org.sg",
-      "source": "Gardens by the Bay"
+      "source": "Gardens by the Bay",
+      "image": "https://www.gardensbythebay.com.sg/content/dam/gbb-2021/image/things-to-do/events/garden-rhapsody/gr-masthead-1920x1080.jpg"
     }
   ],
   "sources": [
