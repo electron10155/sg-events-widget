@@ -192,6 +192,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     var server: HTTPFileServer!
     var baseURL: URL!
     var reloadTimer: Timer?
+    var levelTimer: Timer?
+    /// Base level: just above desktop icons, i.e. same layering family as macOS
+    /// desktop widgets — below ALL normal app windows.
+    let baseLevel = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.desktopIconWindow)) + 1)
     var closeButton: NSButton!
 
     // Compact = ~1/3 the area of Full. Mini widget by default.
@@ -247,9 +251,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         panel.backgroundColor = .clear
         panel.hasShadow = false
         panel.hidesOnDeactivate = false
-        // macOS 原生桌面小组件（Sonoma+）活跃时渲染在 window level 19。
-        // 使用 level 20：始终显示在系统小组件之上，但仍低于主菜单栏(24)/状态栏(25)。
-        panel.level = NSWindow.Level(rawValue: 20)
+        // Desktop level by default (same family as macOS desktop widgets, below app windows).
+        // A timer raises the level ONLY while overlapping a system desktop widget — see updateWindowLevel().
+        panel.level = baseLevel
         panel.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle]
         panel.isMovableByWindowBackground = true
         panel.delegate = self
@@ -314,11 +318,71 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
             self?.webView.reload()
         }
 
+        // 7b. Dynamic z-order: stay at desktop level normally; only rise above a
+        // system desktop widget while actually overlapping it, and never above
+        // normal app windows / system UI. Re-checked every 0.5s.
+        levelTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
+            self?.updateWindowLevel()
+        }
+
         // 8. Sanity check: log the frame again shortly after launch
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
             guard let self = self else { return }
             dbgLog("app: panel frame after 2s = \(self.panel.frame)")
         }
+    }
+
+    /// Dynamic window level. Base = just above desktop icons (desktop widget family,
+    /// below all app windows). If our frame currently overlaps a system desktop
+    /// widget window (owned by WidgetKit / Dock, layer between our base and 19),
+    /// we rise to just above that widget — capped at 18 so we never cover the
+    /// menu bar (24), status bar (25), IME candidates (20) or a widget the user
+    /// is actively interacting with (19).
+    private func updateWindowLevel() {
+        guard let panel = panel else { return }
+        let myPID = ProcessInfo.processInfo.processIdentifier
+        let baseRaw = baseLevel.rawValue
+        guard let list = CGWindowListCopyWindowInfo([.optionOnScreenOnly], kCGNullWindowID)
+                as? [[String: Any]] else { return }
+
+        // Our own bounds in CG (top-left origin) coordinates, matched by PID.
+        var myBounds: CGRect?
+        for w in list {
+            if let pid = w["kCGWindowOwnerPID"] as? Int32, pid == myPID,
+               let b = cgRect(w["kCGWindowBounds"]) {
+                myBounds = b
+                break
+            }
+        }
+        guard let myFrame = myBounds else { return }
+
+        var target = baseRaw
+        for w in list {
+            guard let pid = w["kCGWindowOwnerPID"] as? Int32, pid != myPID,
+                  let layer = w["kCGWindowLayer"] as? Int,
+                  layer > baseRaw, layer <= 19,      // desktop-widget zone only
+                  let b = cgRect(w["kCGWindowBounds"]),
+                  b.intersects(myFrame)
+            else { continue }
+            let owner = w["kCGWindowOwnerName"] as? String ?? ""
+            // Only system desktop-widget owners: WidgetKit / Dock (localized 程序坞).
+            guard owner == "WidgetKit" || owner == "Dock" || owner == "程序坞" else { continue }
+            target = max(target, min(layer + 1, 18))
+        }
+
+        let newLevel = NSWindow.Level(rawValue: target)
+        if panel.level != newLevel {
+            panel.level = newLevel
+            dbgLog("level: -> \(newLevel.rawValue)")
+        }
+    }
+
+    private func cgRect(_ any: Any?) -> CGRect? {
+        guard let d = any as? [String: Any],
+              let x = d["X"] as? CGFloat, let y = d["Y"] as? CGFloat,
+              let w = d["Width"] as? CGFloat, let h = d["Height"] as? CGFloat
+        else { return nil }
+        return CGRect(x: x, y: y, width: w, height: h)
     }
 
     private func defaultOrigin() -> NSPoint {

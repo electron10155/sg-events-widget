@@ -1221,14 +1221,18 @@ function startCompactTimer() {
 function stopCompactTimer() { clearInterval(cpTimer); }
 
 // 点击/滑动 手势识别（参考 carousel 的 touch/swipe 实现）
-// 移动距离 < 10px 视为点击 → 展开完整页；
-// 水平滑动 > 40px 视为翻页手势 → 仅切换活动卡片，不展开；
-// 其他情况（如拖拽窗口）不做任何处理。
+// 移动距离 < 10px 且窗口本身没有移动 → 视为点击 → 展开完整页；
+// 窗口被拖动了（window.screenX/Y 变化）→ 纯拖拽行为，什么都不做；
+// 水平滑动 > 40px → 仅切换活动卡片，不展开。
 const CP_TAP_THRESHOLD = 10;   // 判定为"点击"的最大位移（px）
 const CP_SWIPE_THRESHOLD = 40; // 判定为"滑动翻页"的最小水平位移（px）
+const CP_WIN_MOVE_THRESHOLD = 3; // 窗口自身位移超过此值视为拖拽窗口
 let cpPointerDown = false;
 let cpStartX = 0;
 let cpStartY = 0;
+let cpStartScreenX = 0;  // pointerdown 时窗口自身在屏幕上的位置
+let cpStartScreenY = 0;
+let cpMoved = false;     // 视口内位移曾超过点击阈值
 
 const compactEl = document.getElementById('compactView');
 
@@ -1239,17 +1243,34 @@ compactEl.addEventListener('pointerdown', (e) => {
     return;
   }
   cpPointerDown = true;
+  cpMoved = false;
   cpStartX = e.clientX;
   cpStartY = e.clientY;
+  cpStartScreenX = window.screenX;
+  cpStartScreenY = window.screenY;
+});
+
+compactEl.addEventListener('pointermove', (e) => {
+  if (!cpPointerDown) return;
+  if (Math.hypot(e.clientX - cpStartX, e.clientY - cpStartY) > CP_TAP_THRESHOLD) {
+    cpMoved = true;
+  }
 });
 
 compactEl.addEventListener('pointerup', (e) => {
   if (!cpPointerDown) return;
   cpPointerDown = false;
+
+  // 拖动窗口：窗口自身位置发生变化（webview 内 clientX/Y 因窗口跟随光标而几乎不变，
+  // 必须用 window.screenX/Y 检测），这是移动小组件，不是点击也不是滑动
+  const winMoved = Math.abs(window.screenX - cpStartScreenX) +
+                   Math.abs(window.screenY - cpStartScreenY) > CP_WIN_MOVE_THRESHOLD;
+  if (winMoved) return;
+
   const dx = e.clientX - cpStartX;
   const dy = e.clientY - cpStartY;
   const dist = Math.hypot(dx, dy);
-  if (dist < CP_TAP_THRESHOLD) {
+  if (!cpMoved && dist < CP_TAP_THRESHOLD) {
     // 点击 → 展开完整页
     if (mode === 'compact') setMode('full');
   } else if (Math.abs(dx) > CP_SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy) * 1.5) {
@@ -1257,7 +1278,7 @@ compactEl.addEventListener('pointerup', (e) => {
     if (dx > 0) cpGoTo(cpIndex - 1); else cpGoTo(cpIndex + 1);
     startCompactTimer();
   }
-  // 其余情况：位移较大但非明确水平滑动（多为拖拽），不触发任何动作
+  // 其余情况：位移较大但非明确水平滑动，不触发任何动作
 });
 
 compactEl.addEventListener('pointercancel', () => { cpPointerDown = false; });
