@@ -203,11 +203,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     document.documentElement.style.background = 'transparent';
     document.body.style.background = 'transparent';
     document.body.style.padding = '0';
-    document.body.style.minHeight = '100vh';
-    document.body.style.alignItems = 'center';
-    document.body.style.justifyContent = 'center';
+    document.body.style.margin = '0';
+    document.body.style.width = '100%';
+    document.body.style.height = '100%';
+    document.body.style.alignItems = 'stretch';
+    document.body.style.justifyContent = 'stretch';
     var card = document.querySelector('.pet');
     if (card) {
+      card.style.width = '100%';
+      card.style.height = '100%';
       card.style.boxShadow = '0 14px 40px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.08)';
     }
     """
@@ -247,6 +251,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
         panel.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle]
         panel.isMovableByWindowBackground = true
         panel.delegate = self
+
+        // Clip panel content to rounded rect so no white corners show.
+        panel.contentView?.wantsLayer = true
+        panel.contentView?.layer?.cornerRadius = 16
+        panel.contentView?.layer?.masksToBounds = true
+        panel.contentView?.layer?.backgroundColor = NSColor.clear.cgColor
 
         // 4. WebView
         let config = WKWebViewConfiguration()

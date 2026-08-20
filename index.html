@@ -19,15 +19,18 @@
   --radius-sm: 14px;
 }
 
-html { -webkit-font-smoothing: antialiased; }
+html, body {
+  width: 100%;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+}
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
   background: var(--bg);
-  min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: stretch;
   letter-spacing: -0.01em;
   overflow: hidden;
   -webkit-user-select: none;
@@ -36,22 +39,25 @@ body {
 
 /* === Desktop Pet Frame === */
 .pet {
-  width: 380px;
+  width: 100%;
+  height: 100%;
   background: var(--card);
-  border-radius: 28px;
+  border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ============================================================
    Mode switching: compact (desktop mini) / full (expanded)
    ============================================================ */
-body.mode-compact { padding: 8px; }
+body.mode-compact { padding: 0; }
 body.mode-compact .pet {
   width: 100%;
   height: 100%;
-  border-radius: 20px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
@@ -648,7 +654,7 @@ body.mode-full .compact-view { display: none; }
 /* === Responsive === */
 @media (max-width: 420px) {
   body { padding: 0; }
-  .pet { width: 100%; border-radius: 0; min-height: 100vh; }
+  .pet { width: 100%; height: 100%; border-radius: 0; }
 }
 
 /* === Loading shimmer === */
