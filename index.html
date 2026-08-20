@@ -61,27 +61,92 @@ body.mode-compact .full-view { display: none; }
 body.mode-full .compact-view { display: none; }
 
 /* ============================================================
-   COMPACT VIEW (mini desktop widget)
+   COMPACT VIEW (horizontal desktop widget like Apple Reminders)
    ============================================================ */
 .compact-view {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   height: 100%;
   min-height: 0;
+  overflow: hidden;
+}
+
+.cp-left {
+  width: 42%;
+  min-width: 140px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.cp-left::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 40%;
+  background: linear-gradient(to right, transparent, var(--card));
+}
+.cp-icon-bg {
+  font-size: 52px;
+  filter: drop-shadow(0 4px 18px rgba(0,0,0,0.35));
+  z-index: 1;
+}
+.cp-pattern-h {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  opacity: 0.10;
+  background-image: radial-gradient(circle at 2px 2px, #fff 1px, transparent 0);
+  background-size: 14px 14px;
+}
+.cp-price-h {
+  position: absolute;
+  top: 10px; left: 10px;
+  z-index: 2;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  backdrop-filter: blur(6px);
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+}
+.cp-hot-h {
+  position: absolute;
+  bottom: 10px; left: 10px;
+  z-index: 2;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(255,55,95,0.30);
+  color: #FF375F;
+  backdrop-filter: blur(6px);
+}
+
+.cp-right {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px 12px;
+  position: relative;
+  z-index: 1;
+  background: var(--card);
 }
 
 .cp-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px 8px;
-  background: rgba(0,0,0,0.3);
   flex-shrink: 0;
+  margin-bottom: 8px;
 }
 .cp-brand {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   font-size: 12px;
   font-weight: 700;
   color: var(--text);
@@ -92,7 +157,7 @@ body.mode-full .compact-view { display: none; }
   font-weight: 600;
   color: var(--text-thi);
   background: var(--card-2);
-  padding: 3px 9px;
+  padding: 3px 8px;
   border-radius: 8px;
   white-space: nowrap;
 }
@@ -112,78 +177,23 @@ body.mode-full .compact-view { display: none; }
   display: flex;
   flex-direction: column;
   opacity: 0;
-  transform: translateY(8px) scale(0.98);
+  transform: translateX(10px);
   transition: opacity 0.45s ease, transform 0.45s ease;
   pointer-events: none;
 }
 .cp-event.active {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translateX(0);
   pointer-events: auto;
-}
-
-.cp-visual {
-  height: 92px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  overflow: hidden;
-}
-.cp-visual::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 55%;
-  background: linear-gradient(to bottom, transparent, var(--card));
-}
-.cp-icon {
-  font-size: 40px;
-  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.35));
-  z-index: 1;
-}
-.cp-pattern {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  opacity: 0.12;
-  background-image: radial-gradient(circle at 2px 2px, #fff 1px, transparent 0);
-  background-size: 16px 16px;
-}
-.cp-price {
-  position: absolute;
-  top: 8px; right: 10px;
-  z-index: 2;
-  font-size: 9px;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 6px;
-  backdrop-filter: blur(6px);
-}
-.cp-price.free { background: rgba(48,209,88,0.25); color: #30D158; }
-.cp-price.low { background: rgba(255,159,10,0.25); color: #FF9F0A; }
-.cp-price.paid { background: rgba(255,69,58,0.25); color: #FF453A; }
-.cp-hot {
-  position: absolute;
-  top: 8px; left: 10px;
-  z-index: 2;
-  font-size: 9px;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 6px;
-  background: rgba(255,55,95,0.25);
-  color: #FF375F;
-  backdrop-filter: blur(6px);
 }
 
 .cp-body {
   flex: 1;
   min-height: 0;
-  padding: 10px 16px 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 7px;
+  gap: 5px;
 }
 .cp-cat {
   font-size: 9px;
@@ -196,20 +206,19 @@ body.mode-full .compact-view { display: none; }
   font-size: 15px;
   font-weight: 700;
   color: var(--text);
-  line-height: 1.3;
+  line-height: 1.25;
   letter-spacing: -0.02em;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 .cp-row {
   display: flex;
-  align-items: flex-start;
-  gap: 6px;
+  align-items: center;
+  gap: 5px;
   font-size: 11px;
   color: var(--text-sec);
-  line-height: 1.35;
+  line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -220,9 +229,8 @@ body.mode-full .compact-view { display: none; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 7px 14px 9px;
-  background: rgba(0,0,0,0.25);
   flex-shrink: 0;
+  margin-top: 8px;
 }
 .cp-dots { display: flex; gap: 5px; }
 .cp-dot {
@@ -230,6 +238,7 @@ body.mode-full .compact-view { display: none; }
   border-radius: 50%;
   background: rgba(255,255,255,0.22);
   transition: all 0.25s ease;
+  cursor: pointer;
 }
 .cp-dot.active {
   width: 14px;
@@ -655,23 +664,30 @@ body.mode-full .compact-view { display: none; }
 
 <div class="pet" id="pet">
 
-  <!-- ============ COMPACT VIEW (mini desktop widget) ============ -->
+  <!-- ============ COMPACT VIEW (horizontal desktop widget) ============ -->
   <div class="compact-view" id="compactView">
-    <div class="cp-header">
-      <div class="cp-brand">
-        <span class="cp-flag">🇸🇬</span>
-        <span>今日精选</span>
-      </div>
-      <span class="cp-date" id="cpDate">今天</span>
+    <div class="cp-left" id="cpLeft">
+      <div class="cp-pattern-h"></div>
+      <div class="cp-icon-bg" id="cpIcon">🇸🇬</div>
+      <span class="cp-price-h" id="cpPrice">—</span>
     </div>
-    <div class="cp-stage">
-      <div class="cp-events" id="cpEvents">
-        <div class="cp-event active loading" style="align-items:center;justify-content:center;color:rgba(255,255,255,0.4);font-size:12px;">加载中…</div>
+    <div class="cp-right">
+      <div class="cp-header">
+        <div class="cp-brand">
+          <span class="cp-flag">🇸🇬</span>
+          <span>今日精选</span>
+        </div>
+        <span class="cp-date" id="cpDate">今天</span>
       </div>
-    </div>
-    <div class="cp-footer">
-      <div class="cp-dots" id="cpDots"></div>
-      <div class="cp-hint">点击展开完整信息</div>
+      <div class="cp-stage">
+        <div class="cp-events" id="cpEvents">
+          <div class="cp-event active loading" style="justify-content:center;color:rgba(255,255,255,0.4);font-size:12px;">加载中…</div>
+        </div>
+      </div>
+      <div class="cp-footer">
+        <div class="cp-dots" id="cpDots"></div>
+        <div class="cp-hint">点击展开完整信息</div>
+      </div>
     </div>
   </div>
 
@@ -1069,25 +1085,18 @@ function renderCompact() {
     `${dayInfo ? dayInfo.label + ' · ' : ''}${m}/${d}`;
 
   if (recs.length === 0) {
-    stage.innerHTML = `<div class="cp-event active" style="align-items:center;justify-content:center;color:rgba(255,255,255,0.4);font-size:12px;">今日暂无推荐 🌙</div>`;
+    stage.innerHTML = `<div class="cp-event active" style="justify-content:center;color:rgba(255,255,255,0.4);font-size:12px;">今日暂无推荐 🌙</div>`;
     dotsEl.innerHTML = '';
     return;
   }
 
   stage.innerHTML = recs.map((e, i) => {
     const cat = CAT_META[e.category] || CAT_META.music;
-    const priceCls = e.price === 'free' ? 'free' : e.price === 'low' ? 'low' : 'paid';
     return `
     <div class="cp-event ${i === 0 ? 'active' : ''}">
-      <div class="cp-visual" style="background: linear-gradient(135deg, ${cat.grad[0]}, ${cat.grad[1]})">
-        <div class="cp-pattern"></div>
-        <div class="cp-icon">${cat.icon}</div>
-        ${e.hot ? '<span class="cp-hot">🔥 热门</span>' : ''}
-        <span class="cp-price ${priceCls}">${e.priceText}</span>
-      </div>
       <div class="cp-body">
         <div class="cp-cat">${cat.label}</div>
-        <div class="cp-title">${e.title}</div>
+        <div class="cp-title" title="${e.title}">${e.title}</div>
         <div class="cp-row"><span class="ico">🕐</span><span>${e.time}</span></div>
         <div class="cp-row"><span class="ico">📍</span><span>${e.location}</span></div>
       </div>
@@ -1106,16 +1115,38 @@ function renderCompact() {
   });
 
   cpIndex = 0;
+  updateCompactLeft(recs[0]);
   startCompactTimer();
+}
+
+function updateCompactLeft(e) {
+  const cat = CAT_META[e.category] || CAT_META.music;
+  const left = document.getElementById('cpLeft');
+  const icon = document.getElementById('cpIcon');
+  const price = document.getElementById('cpPrice');
+  left.style.background = `linear-gradient(135deg, ${cat.grad[0]}, ${cat.grad[1]})`;
+  icon.textContent = cat.icon;
+  price.textContent = e.priceText;
+  if (e.hot && !document.getElementById('cpHot')) {
+    const hot = document.createElement('span');
+    hot.id = 'cpHot';
+    hot.className = 'cp-hot-h';
+    hot.textContent = '🔥 热门';
+    left.appendChild(hot);
+  } else if (!e.hot) {
+    document.getElementById('cpHot')?.remove();
+  }
 }
 
 function cpGoTo(idx) {
   const events = document.querySelectorAll('.cp-event');
   const dots = document.querySelectorAll('.cp-dot');
+  const recs = getRecommendations(getTodayStr());
   if (events.length === 0) return;
   cpIndex = ((idx % events.length) + events.length) % events.length;
   events.forEach((s, i) => s.classList.toggle('active', i === cpIndex));
   dots.forEach((d, i) => d.classList.toggle('active', i === cpIndex));
+  updateCompactLeft(recs[cpIndex]);
 }
 
 function startCompactTimer() {

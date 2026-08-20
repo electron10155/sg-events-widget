@@ -195,7 +195,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKNavigationDelegate, 
     var closeButton: NSButton!
 
     // Compact = ~1/3 the area of Full. Mini widget by default.
-    static let compactSize = NSSize(width: 260, height: 440)
+    static let compactSize = NSSize(width: 420, height: 170)
     static let fullSize = NSSize(width: 480, height: 720)
     var isExpanded = false
 
