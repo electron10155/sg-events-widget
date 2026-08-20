@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SG Events · 每日精选</title>
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg: #000000;
+  --card: #1c1c1e;
+  --card-2: #2c2c2e;
+  --text: #ffffff;
+  --text-sec: rgba(255,255,255,0.65);
+  --text-thi: rgba(255,255,255,0.40);
+  --accent: #FF9F0A;
+  --radius: 20px;
+  --radius-sm: 14px;
+}
+
+html { -webkit-font-smoothing: antialiased; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  letter-spacing: -0.01em;
+  overflow: hidden;
+}
+
+/* === Desktop Pet Frame === */
+.pet {
+  width: 380px;
+  background: var(--card);
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.08);
+  position: relative;
+}
+
+/* === Header === */
+.pet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 14px;
+  background: rgba(0,0,0,0.3);
+}
+.pet-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pet-flag { font-size: 20px; }
+.pet-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.pet-date {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-thi);
+  background: var(--card-2);
+  padding: 5px 12px;
+  border-radius: 10px;
+}
+
+/* === Day Tabs === */
+.day-tabs {
+  display: flex;
+  gap: 5px;
+  padding: 10px 14px 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.day-tabs::-webkit-scrollbar { display: none; }
+.day-tab {
+  flex-shrink: 0;
+  border: none;
+  background: var(--card-2);
+  color: var(--text-thi);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 7px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+.day-tab:hover { color: var(--text-sec); }
+.day-tab.active {
+  background: var(--accent);
+  color: #000;
+}
+
+/* === Carousel === */
+.carousel {
+  position: relative;
+  height: 410px;
+  overflow: hidden;
+}
+
+.slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+.slide.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* Slide visual top */
+.slide-visual {
+  height: 150px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.slide-visual::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent, var(--card));
+}
+.slide-icon {
+  font-size: 52px;
+  filter: drop-shadow(0 4px 20px rgba(0,0,0,0.3));
+  z-index: 1;
+}
+.slide-pattern {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  opacity: 0.12;
+  background-image: radial-gradient(circle at 2px 2px, #fff 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+/* Slide content */
+.slide-content {
+  flex: 1;
+  padding: 0 20px 16px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.slide-content::-webkit-scrollbar { display: none; }
+
+.slide-badges {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 7px;
+  letter-spacing: 0.02em;
+}
+.badge-cat {
+  background: rgba(255,255,255,0.12);
+  color: var(--text);
+}
+.badge-price-free {
+  background: rgba(48,209,88,0.2);
+  color: #30D158;
+}
+.badge-price-low {
+  background: rgba(255,159,10,0.2);
+  color: #FF9F0A;
+}
+.badge-price-paid {
+  background: rgba(255,69,58,0.2);
+  color: #FF453A;
+}
+.badge-hot {
+  background: rgba(255,55,95,0.2);
+  color: #FF375F;
+}
+
+.slide-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+
+.slide-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--text-sec);
+  line-height: 1.4;
+}
+.info-icon { font-size: 11px; flex-shrink: 0; margin-top: 1px; }
+
+.slide-desc {
+  font-size: 12px;
+  color: var(--text-sec);
+  line-height: 1.5;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.slide-link {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: var(--card-2);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.slide-link:hover {
+  background: var(--accent);
+  color: #000;
+}
+
+/* === Navigation === */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  opacity: 0;
+}
+.carousel:hover .nav-arrow { opacity: 0.85; }
+.nav-arrow:hover { background: rgba(0,0,0,0.8); }
+.nav-prev { left: 8px; }
+.nav-next { right: 8px; }
+
+/* === Progress bar === */
+.progress-bar {
+  position: absolute;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.1s linear;
+  z-index: 11;
+}
+
+/* === Dots === */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 0 6px;
+  background: var(--card);
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.dot.active {
+  width: 18px;
+  border-radius: 4px;
+  background: var(--accent);
+}
+
+/* === Footer === */
+.pet-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px 16px;
+  background: rgba(0,0,0,0.2);
+}
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--text-thi);
+}
+.expand-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 4px 10px;
+  border-radius: 8px;
+  transition: all 0.15s;
+}
+.expand-btn:hover { background: rgba(255,159,10,0.12); }
+.update-badge {
+  font-size: 9px;
+  font-weight: 600;
+  color: #30D158;
+  background: rgba(48,209,88,0.12);
+  padding: 2px 7px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.update-badge.offline { color: var(--text-thi); background: rgba(255,255,255,0.06); }
+
+/* === Expanded View === */
+.expanded-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(20px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.expanded-overlay.show { display: flex; }
+.expanded-panel {
+  width: 420px;
+  max-height: 85vh;
+  background: var(--card);
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.expanded-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.expanded-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.close-btn {
+  background: var(--card-2);
+  border: none;
+  color: var(--text-sec);
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.expanded-list {
+  max-height: 60vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+.expanded-list::-webkit-scrollbar { width: 4px; }
+.expanded-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+.exp-item {
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: background 0.15s;
+}
+.exp-item:hover { background: var(--card-2); }
+.exp-item-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.exp-item-title { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; line-height: 1.3; }
+.exp-item-meta { font-size: 11px; color: var(--text-thi); margin-top: 5px; line-height: 1.4; }
+
+/* === Responsive === */
+@media (max-width: 420px) {
+  body { padding: 0; }
+  .pet { width: 100%; border-radius: 0; min-height: 100vh; }
+}
+
+/* === Loading shimmer === */
+@keyframes shimmer {
+  0% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.4; }
+}
+.loading { animation: shimmer 1.5s infinite; }
+</style>
+</head>
+<body>
+
+<div class="pet" id="pet">
+  <!-- Header -->
+  <div class="pet-header">
+    <div class="pet-brand">
+      <span class="pet-flag">🇸🇬</span>
+      <span class="pet-title">每日精选</span>
+    </div>
+    <span class="pet-date" id="dateLabel">8月20日</span>
+  </div>
+
+  <!-- Day Tabs -->
+  <div class="day-tabs" id="dayTabs"></div>
+
+  <!-- Carousel -->
+  <div class="carousel" id="carousel">
+    <div class="progress-bar" id="progressBar" style="width:0%"></div>
+    <div class="slides" id="slides"></div>
+    <button class="nav-arrow nav-prev" id="navPrev">‹</button>
+    <button class="nav-arrow nav-next" id="navNext">›</button>
+  </div>
+
+  <!-- Dots -->
+  <div class="dots" id="dots"></div>
+
+  <!-- Footer -->
+  <div class="pet-footer">
+    <div class="footer-left">
+      <span id="footerText">滑动浏览 · 点击查看官网</span>
+      <span class="update-badge offline" id="updateBadge" style="display:none;"></span>
+    </div>
+    <button class="expand-btn" id="expandBtn">全部活动 →</button>
+  </div>
+</div>
+
+<!-- Expanded Panel -->
+<div class="expanded-overlay" id="expandedOverlay">
+  <div class="expanded-panel">
+    <div class="expanded-header">
+      <span class="expanded-title" id="expandedTitle">全部活动</span>
+      <button class="close-btn" id="closeExpanded">✕</button>
+    </div>
+    <div class="expanded-list" id="expandedList"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  用户偏好画像
+// ============================================================
+const USER_PREFS = {
+  categories: ['music', 'museum', 'exhibition', 'art', 'festival'],
+  categoryScores: {
+    music: 3, museum: 3, exhibition: 2.5, art: 2,
+    festival: 2, film: 1.5, nature: 1.5, community: 1, workshop: 1.5,
+  },
+  price: 'free-first', // free > low > paid
+  context: 'solo',
+  maxPerDay: 5,
+};
+
+// ============================================================
+//  活动数据（同前，略作精简整理）
+// ============================================================
+const CAT_META = {
+  music:      { label: '音乐演出', icon: '🎵', grad: ['#FF9F0A','#FF6B00'] },
+  museum:     { label: '博物馆',   icon: '🏛️', grad: ['#5E5CE6','#3634A3'] },
+  exhibition: { label: '展览',     icon: '🖼️', grad: ['#BF5AF2','#8944AB'] },
+  art:        { label: '艺术',     icon: '🎨', grad: ['#FF375F','#C0273D'] },
+  festival:   { label: '艺术节',   icon: '🌙', grad: ['#FF6B6B','#FF922B'] },
+  nature:     { label: '自然',     icon: '🌿', grad: ['#30D158','#248A3D'] },
+  film:       { label: '电影',     icon: '🎬', grad: ['#7950F2','#4B2BA0'] },
+  community:  { label: '社区',     icon: '👥', grad: ['#0A84FF','#0040DD'] },
+  workshop:   { label: '工作坊',   icon: '✏️', grad: ['#FFD60A','#FF9500'] },
+};
+
+const BUILTIN_WEEK_DATES = [
+  { date:'2026-08-20', label:'今天', short:'8/20 周四' },
+  { date:'2026-08-21', label:'明天', short:'8/21 周五' },
+  { date:'2026-08-22', label:'周六', short:'8/22 周六' },
+  { date:'2026-08-23', label:'周日', short:'8/23 周日' },
+  { date:'2026-08-24', label:'周一', short:'8/24 周一' },
+  { date:'2026-08-25', label:'周二', short:'8/25 周二' },
+  { date:'2026-08-26', label:'周三', short:'8/26 周三' },
+  { date:'2026-08-27', label:'周四', short:'8/27 周四' },
+];
+
+const BUILTIN_EVENTS = [
+  // ===== 8/20 今天 =====
+  { date:'2026-08-20', title:'Garden Rhapsody 灯光秀', category:'nature', price:'free', priceText:'免费',
+    time:'今晚 19:45 & 20:45', location:'Supertree Grove, Gardens by the Bay',
+    desc:'超级树灯光秀国庆特别版"Songs of Singapore"，四位本地歌手定制编曲。每场约15分钟，适合下班后散步观看。',
+    link:'https://www.gardensbythebay.org.sg', source:'Gardens by the Bay', hot:true },
+  { date:'2026-08-20', title:'Sing, Sign, Singapore', category:'music', price:'free', priceText:'免费',
+    time:'今晚 18:45 & 19:45', location:'Esplanade Concourse 滨海艺术中心',
+    desc:'包容性艺术实践者 Zee 与手语艺术家 Shalini 带领，将音乐与手语结合，创造人人都能参与的表达体验。',
+    link:'https://www.esplanade.com/reddotaugust', source:'Esplanade' },
+  { date:'2026-08-20', title:'旧曲重温，八月情长', category:'music', price:'free', priceText:'免费',
+    time:'今晚', location:'Esplanade 滨海艺术中心',
+    desc:'歌手谢胜之与资深音乐人庄夏风一同重温经典华语金曲。A Date With Friends 系列。',
+    link:'https://www.esplanade.com/whats-on?IsFree=', source:'Esplanade' },
+  { date:'2026-08-20', title:'Tan Lip Seng: A Life in Colour', category:'exhibition', price:'free', priceText:'免费',
+    time:'12:00-19:00（至9/27）', location:'Objectifs Centre for Photography and Film',
+    desc:'致敬已故新加坡摄影大师陈立胜，回顾其捕捉国家静默节奏与层叠历史的影像遗产。适合独自安静欣赏。',
+    link:'https://www.objectifs.com.sg', source:'Objectifs' },
+  { date:'2026-08-20', title:'National Museum 常设展 & 特别展', category:'museum', price:'free', priceText:'公民/PR免费',
+    time:'10:00-19:00', location:'National Museum, 93 Stamford Rd',
+    desc:'公民/PR免费入场。当前特展：Once Upon a Tide（潮涌狮城）与 Singapore Odyssea。国家历史与沉浸式装置的完美结合。',
+    link:'https://www.nationalmuseum.nhb.gov.sg', source:'National Museum' },
+  { date:'2026-08-20', title:'Gillman Barracks 当代艺术区', category:'art', price:'free', priceText:'免费',
+    time:'11:00-19:00', location:'9 Lock Rd（多间画廊）',
+    desc:'旧军营改造的当代艺术区，多家国际画廊免费开放。远离喧嚣的安静艺术空间，独自漫步最佳。',
+    link:'https://www.gillmanbarracks.com', source:'Gillman Barracks' },
+  { date:'2026-08-20', title:'Singapore City Gallery 城市展览馆', category:'museum', price:'free', priceText:'免费',
+    time:'9:00-17:00', location:'URA Centre, 45 Maxwell Rd',
+    desc:'市区重建局互动展览，展示新加坡城市规划与未来愿景。免费、有空调、适合午休时间参观。',
+    link:'https://www.ura.gov.sg', source:'URA' },
+
+  // ===== 8/21 明天 夜间艺术节开幕！=====
+  { date:'2026-08-21', title:'Tales of Earth and Sea 光雕投影', category:'festival', price:'free', priceText:'免费',
+    time:'周五 19:30-24:00', location:'National Museum, 93 Stamford Rd',
+    desc:'印尼团队 The Fox, The Folks 在国家博物馆外墙投影本地民间传说，配以新加坡 Artusik 与马来西亚 UiTM 的跨文化原创配乐。音乐+博物馆+艺术一次满足。',
+    link:'https://www.heritage.sg/sgnightfest/programmes/tales-of-earth-and-sea',
+    source:'Night Festival', hot:true },
+  { date:'2026-08-21', title:'Birdmen by Close-Act 🔥仅3天', category:'festival', price:'free', priceText:'免费·限时',
+    time:'19:45 & 21:15（仅8/21-23）', location:'National Museum 及周边街区巡游',
+    desc:'荷兰 Close-Act 剧团东南亚首演！发光翼龙造型踩高跷表演者，融合灯光、偶戏与现场音乐，在布拉沙武吉士街区巡游。错过等一年！',
+    link:'https://www.heritage.sg/sgnightfest/programmes/birdmen-by-close-act',
+    source:'Night Festival', hot:true },
+  { date:'2026-08-21', title:'歌台欢乐夜', category:'music', price:'free', priceText:'免费',
+    time:'晚间', location:'Esplanade 滨海艺术中心',
+    desc:'多组实力艺人对唱联演，共度热闹的歌台之夜。A Date With Friends 2026 系列免费节目。',
+    link:'https://www.esplanade.com/whats-on?IsFree=', source:'Esplanade' },
+  { date:'2026-08-21', title:'MALAM 投影大赛', category:'festival', price:'free', priceText:'免费',
+    time:'19:30-24:00', location:'The Cathay, 2 Handy Rd',
+    desc:'首届投影映射大赛，近50份东南亚艺术家投稿在国泰大厦外立面展出，前5名将贯穿整个艺术节。',
+    link:'https://www.heritage.sg/sgnightfest/programmes/malam-projection-mapping-competition',
+    source:'Night Festival' },
+  { date:'2026-08-21', title:'Stormy Straits 风暴海峡', category:'art', price:'free', priceText:'免费',
+    time:'19:30-24:00', location:'Bugis Street Art Lane',
+    desc:'脚手架结构化作发光风暴云，移动的阴影重现武吉士航海者曾面对的怒涛。在发光灯塔间穿行，聆听穿越海峡的世代传说。',
+    link:'https://www.heritage.sg/sgnightfest/programmes/stormy-straits', source:'Night Festival' },
+  { date:'2026-08-21', title:'Lovebug 爱虫', category:'art', price:'free', priceText:'免费',
+    time:'19:30-24:00', location:'100 Victoria St',
+    desc:'漫步于神话植物与生灵之间，一个关于爱意的永恒称谓化身为现代民间童话。适合独自沉浸的梦幻空间。',
+    link:'https://www.heritage.sg/sgnightfest', source:'Night Festival' },
+  { date:'2026-08-21', title:'Once Upon a Time 从前', category:'art', price:'free', priceText:'免费',
+    time:'19:30-24:00', location:'13 Stamford Rd',
+    desc:'用碎布料、旧衣物和日常弃布制作的折纸动物雕塑，化为民间传说插画——将纺织废料升华为叙事艺术。',
+    link:'https://www.heritage.sg/sgnightfest', source:'Night Festival' },
+
+  // ===== 8/22 周六 =====
+  { date:'2026-08-22', title:'Birdmen 倒数第2天', category:'festival', price:'free', priceText:'免费·限时',
+    time:'19:45 & 21:15', location:'National Museum 及周边街区巡游',
+    desc:'荷兰剧团翼龙踩高跷灯光表演，仅开幕周末3天。今天和明天是最后机会！',
+    link:'https://www.heritage.sg/sgnightfest/programmes/birdmen-by-close-act',
+    source:'Night Festival', hot:true },
+  { date:'2026-08-22', title:'夜节全部装置继续', category:'festival', price:'free', priceText:'免费',
+    time:'19:30-24:00（周六至午夜）', location:'Bras Basah.Bugis 艺术文化区',
+    desc:'所有灯光装置和投影继续展出。今晚延时至午夜，适合深度夜游。独自漫步灯光装置之间。',
+    link:'https://www.heritage.sg/sgnightfest', source:'Night Festival' },
+  { date:'2026-08-22', title:'Horror Nights @ Oldham Theatre', category:'film', price:'low', priceText:'$10',
+    time:'19:30-21:00', location:'Oldham Theatre, National Archives',
+    desc:'东南亚复古恐怖电影放映+幕后档案展示+类型片讨论。欢迎穿恐怖/奇幻主题服装。独自观影也很有氛围感。',
+    link:'https://www.heritage.sg/sgnightfest/programmes/horror-nights-oldham-theatre', source:'Night Festival' },
+  { date:'2026-08-22', title:'A Date with Mel & Elle', category:'music', price:'free', priceText:'免费',
+    time:'见官网', location:'Esplanade 滨海艺术中心',
+    desc:'与 Mel & Elle 共度一个夜晚，经典旋律、满满心意和好伙伴。A Date With Friends 系列免费节目。',
+    link:'https://www.esplanade.com/whats-on?IsFree=', source:'Esplanade' },
+  { date:'2026-08-22', title:'Workshop: Bring a Song to Life', category:'workshop', price:'free', priceText:'免费',
+    time:'见官网', location:'Esplanade 滨海艺术中心',
+    desc:'尤克里里即兴演奏入门工作坊，感受与他人一起创作音乐的魔力。A Date With Friends 系列。',
+    link:'https://www.esplanade.com/whats-on?IsFree=', source:'Esplanade' },
+
+  // ===== 8/23 周日 =====
+  { date:'2026-08-23', title:'Birdmen 最后一天！', category:'festival', price:'free', priceText:'免费·最后一天',
+    time:'19:45 & 21:15', location:'National Museum 及周边街区巡游',
+    desc:'荷兰剧团翼龙踩高跷灯光表演最后一场！开幕周末3天演出今天落幕，错过等明年。',
+    link:'https://www.heritage.sg/sgnightfest/programmes/birdmen-by-close-act',
+    source:'Night Festival', hot:true },
+  { date:'2026-08-23', title:'夜节全部装置继续', category:'festival', price:'free', priceText:'免费',
+    time:'19:30-23:00', location:'Bras Basah.Bugis 艺术文化区',
+    desc:'所有灯光装置和投影继续。周日到23:00，适合轻松夜游，人比周六少。',
+    link:'https://www.heritage.sg/sgnightfest', source:'Night Festival' },
+  { date:'2026-08-23', title:'National Museum 特展', category:'museum', price:'free', priceText:'公民/PR免费',
+    time:'10:00-19:00', location:'National Museum, 93 Stamford Rd',
+    desc:'公民/PR免费。Once Upon a Tide 与 Singapore Odyssea 两大特展，沉浸式装置体验。',
+    link:'https://www.nationalmuseum.nhb.gov.sg', source:'National Museum' },
+
+  // ===== 8/24 周一 =====
+  { date:'2026-08-24', title:'夜节灯光装置（工作日场）', category:'festival', price:'free', priceText:'免费',
+    time:'19:30-23:00', location:'Bras Basah.Bugis 艺术文化区',
+    desc:'夜间艺术节灯光装置在工作日继续。今晚下班后可以悠闲逛展，人比周末少很多。',
+    link:'https://www.heritage.sg/sgnightfest', source:'Night Festival' },
+  { date:'2026-08-24', title:'Music With a Heart 心之音乐', category:'music', price:'free', priceText:'免费',
+    time:'见官网', location:'Esplanade 滨海艺术中心',
+    desc:'与 Silverwaves Band 一起庆祝家的声音，演绎深受喜爱的本地经典。Red Dot August 系列。',
+    link:'https://www.esplanade.com/reddotaugust', source:'Esplanade' },
+  { date:'2026-08-24', title:'National Museum 特展', category:'museum', price:'free', priceText:'公民/PR免费',
+    time:'10:00-19:00', location:'National Museum, 93 Stamford Rd',
+    desc:'公民/PR免费入场。Once Upon a Tide 与 Singapore Odyssea。',
+    link:'https://www.nationalmuseum.nhb.gov.sg', source:'National Museum' },
+  { date:'2026-08-24', title:'Garden Rhapsody 灯光秀', category:'nature', price:'free', priceText:'免费',
+    time:'每晚 19:45 & 20:45', location:'Supertree Grove, Gardens by the Bay',
+    desc:'超级树灯光秀国庆特别版"Songs of Singapore"。每场约15分钟。',
+    link:'https://www.gardensbythebay.org.sg', source:'Gardens by the Bay' },
+
+  // ===== 8/25 周二 =====
+  { date:'2026-08-25', title:'夜节灯光装置', category:'festival', price:'free', priceText:'免费',
+    time:'19:30-23:00', location:'Bras Basah.Bugis 艺术文化区',
+    desc:'夜间艺术节灯光装置工作日继续。今晚可以悠闲逛展。',
+    link:'https://www.heritage.sg/sgnightfest', source:'Night Festival' },
+  { date:'2026-08-25', title:'The City of My Soul', category:'music', price:'free', priceText:'免费',
+    time:'见官网', location:'Esplanade 滨海艺术中心',
+    desc:'Khalid Ajmain 和 Singapore Rojak 带来文字与音乐的情感碰撞。Red Dot August 系列。',
+    link:'https://www.esplanade.com/reddotaugust', source:'Esplanade' },
+  { date:'2026-08-25', title:'Singapore City Gallery', category:'museum', price:'free', priceText:'免费',
+    time:'9:00-17:00', location:'URA Centre, 45 Maxwell Rd',
+    desc:'市区重建局互动城市规划展览，免费入场。适合午休时间参观。',
+    link:'https://www.ura.gov.sg', source:'URA' },
+
+  // ===== 8/26 周三 =====
+  { date:'2026-08-26', title:'夜节灯光装置', category:'festival', price:'free', priceText:'免费',
+    time:'19:30-23:00', location:'Bras Basah.Bugis 艺术文化区',
+    desc:'夜间艺术节灯光装置继续。本周倒数第二天看夜节装置。',
+    link:'https://www.heritage.sg/sgnightfest', source:'Night Festival' },
+  { date:'2026-08-26', title:'Gillman Barracks 当代艺术', category:'art', price:'free', priceText:'免费',
+    time:'11:00-19:00', location:'9 Lock Rd',
+    desc:'旧军营改造的当代艺术区，多家国际画廊免费开放。远离喧嚣的安静艺术空间。',
+    link:'https://www.gillmanbarracks.com', source:'Gillman Barracks' },
+
+  // ===== 8/27 周四 =====
+  { date:'2026-08-27', title:'夜节灯光装置', category:'festival', price:'free', priceText:'免费',
+    time:'19:30-23:00', location:'Bras Basah.Bugis 艺术文化区',
+    desc:'夜间艺术节灯光装置继续。今晚 Fort Canning 夜间步道也开放（需购票$60）。',
+    link:'https://www.heritage.sg/sgnightfest', source:'Night Festival' },
+  { date:'2026-08-27', title:'River Ramble — 新加坡河的故事', category:'music', price:'free', priceText:'免费',
+    time:'见官网', location:'Esplanade 滨海艺术中心',
+    desc:'诗意的舞蹈剧场之旅，连接新加坡的过去、现在与未来。Red Dot August 系列免费节目。',
+    link:'https://www.esplanade.com/reddotaugust', source:'Esplanade' },
+  { date:'2026-08-27', title:'Garden Rhapsody 灯光秀', category:'nature', price:'free', priceText:'免费',
+    time:'每晚 19:45 & 20:45', location:'Supertree Grove, Gardens by the Bay',
+    desc:'超级树灯光秀国庆特别版。每场约15分钟。',
+    link:'https://www.gardensbythebay.org.sg', source:'Gardens by the Bay' },
+];
+
+// ============================================================
+//  动态数据加载（从 events.json 读取，失败则回退到内置数据）
+// ============================================================
+let ALL_EVENTS = BUILTIN_EVENTS;
+let WEEK_DATES = BUILTIN_WEEK_DATES;
+let USER_PREFS_DYNAMIC = null;
+let lastUpdated = null;
+
+function generateWeekDates() {
+  const days = [];
+  const today = new Date();
+  const weekdays = ['周日','周一','周二','周三','周四','周五','周六'];
+  for (let i = 0; i < 8; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() + i);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const dateStr = `${y}-${m}-${day}`;
+    const label = i === 0 ? '今天' : i === 1 ? '明天' : weekdays[d.getDay()];
+    const short = `${parseInt(m)}/${parseInt(day)} ${weekdays[d.getDay()]}`;
+    days.push({ date: dateStr, label, short });
+  }
+  return days;
+}
+
+function getTodayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+async function loadData() {
+  try {
+    const res = await fetch('events.json?v=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (data.events && data.events.length > 0) {
+      ALL_EVENTS = data.events;
+      lastUpdated = data.lastUpdated;
+      if (data.weekDates && data.weekDates.length > 0) {
+        WEEK_DATES = data.weekDates;
+      } else {
+        WEEK_DATES = generateWeekDates();
+      }
+      if (data.userPrefs) USER_PREFS_DYNAMIC = data.userPrefs;
+      const badge = document.getElementById('updateBadge');
+      if (badge && lastUpdated) {
+        const d = new Date(lastUpdated);
+        const m = d.getMonth() + 1;
+        const day = d.getDate();
+        const hh = String(d.getHours()).padStart(2,'0');
+        const mm = String(d.getMinutes()).padStart(2,'0');
+        badge.textContent = `🔄 ${m}/${day} ${hh}:${mm}更新`;
+        badge.style.display = '';
+      }
+      console.log(`[SG Events] Loaded ${ALL_EVENTS.length} events from events.json`);
+    }
+  } catch (e) {
+    WEEK_DATES = generateWeekDates();
+    console.log('[SG Events] Using embedded data:', e.message);
+  }
+}
+
+// ============================================================
+//  推荐引擎：根据用户偏好评分筛选
+// ============================================================
+function getPrefs() { return USER_PREFS_DYNAMIC || USER_PREFS; }
+
+function scoreEvent(e) {
+  let score = 0;
+  const prefs = getPrefs();
+  const catScore = prefs.categoryScores[e.category] || 0;
+  score += catScore * 3;
+  if (e.price === 'free') score += 3;
+  else if (e.price === 'low') score += 1.5;
+  else score -= 1;
+  if (e.hot) score += 2;
+  score += 0.5;
+  return score;
+}
+
+function getRecommendations(date) {
+  const dayEvents = ALL_EVENTS.filter(e => e.date === date);
+  const scored = dayEvents.map(e => ({ ...e, _score: scoreEvent(e) }));
+  scored.sort((a, b) => b._score - a._score);
+  return scored.slice(0, getPrefs().maxPerDay);
+}
+
+function getAllForDay(date) {
+  return ALL_EVENTS.filter(e => e.date === date);
+}
+
+// ============================================================
+//  渲染
+// ============================================================
+let currentDate = getTodayStr();
+let currentSlide = 0;
+let autoTimer = null;
+let progressTimer = null;
+const SLIDE_DURATION = 6000; // 6 seconds per slide
+
+function renderDayTabs() {
+  const container = document.getElementById('dayTabs');
+  container.innerHTML = WEEK_DATES.map(d => 
+    `<button class="day-tab ${d.date === currentDate ? 'active' : ''}" data-date="${d.date}">${d.short}</button>`
+  ).join('');
+  container.querySelectorAll('.day-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentDate = btn.dataset.date;
+      currentSlide = 0;
+      renderDayTabs();
+      renderSlides();
+      startAutoPlay();
+    });
+  });
+}
+
+function renderSlides() {
+  const recs = getRecommendations(currentDate);
+  const slidesEl = document.getElementById('slides');
+  const dotsEl = document.getElementById('dots');
+
+  if (recs.length === 0) {
+    slidesEl.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(255,255,255,0.4);font-size:13px;">今日暂无推荐活动 🌙</div>`;
+    dotsEl.innerHTML = '';
+    return;
+  }
+
+  slidesEl.innerHTML = recs.map((e, i) => {
+    const cat = CAT_META[e.category] || CAT_META.music;
+    const priceClass = e.price === 'free' ? 'badge-price-free' : e.price === 'low' ? 'badge-price-low' : 'badge-price-paid';
+    return `
+    <div class="slide ${i === 0 ? 'active' : ''}" data-idx="${i}">
+      <div class="slide-visual" style="background: linear-gradient(135deg, ${cat.grad[0]}, ${cat.grad[1]})">
+        <div class="slide-pattern"></div>
+        <div class="slide-icon">${cat.icon}</div>
+      </div>
+      <div class="slide-content">
+        <div class="slide-badges">
+          <span class="badge badge-cat">${cat.label}</span>
+          <span class="badge ${priceClass}">${e.priceText}</span>
+          ${e.hot ? '<span class="badge badge-hot">🔥 热门</span>' : ''}
+        </div>
+        <div class="slide-title">${e.title}</div>
+        <div class="slide-info">
+          <div class="info-row"><span class="info-icon">🕐</span><span>${e.time}</span></div>
+          <div class="info-row"><span class="info-icon">📍</span><span>${e.location}</span></div>
+        </div>
+        <div class="slide-desc">${e.desc}</div>
+        <a class="slide-link" href="${e.link}" target="_blank" rel="noopener">🔗 ${e.source} → 查看官网</a>
+      </div>
+    </div>`;
+  }).join('');
+
+  dotsEl.innerHTML = recs.map((_, i) =>
+    `<div class="dot ${i === 0 ? 'active' : ''}" data-idx="${i}"></div>`
+  ).join('');
+
+  dotsEl.querySelectorAll('.dot').forEach(dot => {
+    dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.idx)));
+  });
+
+  // Update date label
+  const dayInfo = WEEK_DATES.find(d => d.date === currentDate);
+  const [m, d] = currentDate.split('-').slice(1).map(n => parseInt(n));
+  document.getElementById('dateLabel').textContent = `${m}月${d}日 ${dayInfo.label}`;
+}
+
+function goToSlide(idx) {
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  if (slides.length === 0) return;
+  currentSlide = ((idx % slides.length) + slides.length) % slides.length;
+  slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+  dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+  resetProgress();
+}
+
+function nextSlide() { goToSlide(currentSlide + 1); }
+function prevSlide() { goToSlide(currentSlide - 1); }
+
+function startAutoPlay() {
+  clearInterval(autoTimer);
+  clearInterval(progressTimer);
+  resetProgress();
+  let elapsed = 0;
+  progressTimer = setInterval(() => {
+    elapsed += 50;
+    const pct = Math.min(100, (elapsed / SLIDE_DURATION) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+  }, 50);
+  autoTimer = setInterval(() => {
+    nextSlide();
+  }, SLIDE_DURATION);
+}
+
+function resetProgress() {
+  document.getElementById('progressBar').style.width = '0%';
+  clearInterval(progressTimer);
+  let elapsed = 0;
+  progressTimer = setInterval(() => {
+    elapsed += 50;
+    const pct = Math.min(100, (elapsed / SLIDE_DURATION) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+    if (pct >= 100) {
+      clearInterval(progressTimer);
+    }
+  }, 50);
+}
+
+// Nav arrows
+document.getElementById('navNext').addEventListener('click', (e) => {
+  e.stopPropagation();
+  nextSlide();
+  startAutoPlay();
+});
+document.getElementById('navPrev').addEventListener('click', (e) => {
+  e.stopPropagation();
+  prevSlide();
+  startAutoPlay();
+});
+
+// Pause on hover
+document.getElementById('carousel').addEventListener('mouseenter', () => {
+  clearInterval(autoTimer);
+  clearInterval(progressTimer);
+});
+document.getElementById('carousel').addEventListener('mouseleave', () => {
+  startAutoPlay();
+});
+
+// Touch/swipe support
+let touchStartX = 0;
+document.getElementById('carousel').addEventListener('touchstart', (e) => {
+  touchStartX = e.touches[0].clientX;
+});
+document.getElementById('carousel').addEventListener('touchend', (e) => {
+  const diff = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(diff) > 40) {
+    if (diff > 0) prevSlide(); else nextSlide();
+    startAutoPlay();
+  }
+});
+
+// Keyboard
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') { prevSlide(); startAutoPlay(); }
+  if (e.key === 'ArrowRight') { nextSlide(); startAutoPlay(); }
+});
+
+// Expanded view
+document.getElementById('expandBtn').addEventListener('click', () => {
+  const all = getAllForDay(currentDate);
+  const dayInfo = WEEK_DATES.find(d => d.date === currentDate);
+  document.getElementById('expandedTitle').textContent = `${dayInfo.label} · 全部 ${all.length} 项活动`;
+  document.getElementById('expandedList').innerHTML = all.map(e => {
+    const cat = CAT_META[e.category] || CAT_META.music;
+    const priceClass = e.price === 'free' ? 'badge-price-free' : e.price === 'low' ? 'badge-price-low' : 'badge-price-paid';
+    return `
+    <a class="exp-item" href="${e.link}" target="_blank" rel="noopener">
+      <div class="exp-item-top">
+        <div class="exp-item-title">${cat.icon} ${e.title}</div>
+        <span class="badge ${priceClass}" style="flex-shrink:0;">${e.priceText}</span>
+      </div>
+      <div class="exp-item-meta">🕐 ${e.time} · 📍 ${e.location}</div>
+    </a>`;
+  }).join('');
+  document.getElementById('expandedOverlay').classList.add('show');
+});
+document.getElementById('closeExpanded').addEventListener('click', () => {
+  document.getElementById('expandedOverlay').classList.remove('show');
+});
+document.getElementById('expandedOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'expandedOverlay') {
+    document.getElementById('expandedOverlay').classList.remove('show');
+  }
+});
+
+// Init
+async function init() {
+  await loadData();
+  currentDate = getTodayStr();
+  // If today's date isn't in WEEK_DATES, use the first available date
+  if (!WEEK_DATES.find(d => d.date === currentDate) && WEEK_DATES.length > 0) {
+    currentDate = WEEK_DATES[0].date;
+  }
+  renderDayTabs();
+  renderSlides();
+  startAutoPlay();
+}
+init();
+</script>
+
+</body>
+</html>
